@@ -1,6 +1,8 @@
+//https://www.youtube.com/watch?v=pKd0Rpw7O48
 const express = require('express')
 const app = express()
 
+app.use(express.json())
 const courses = [
     {id:1, name: 'course1'},
     {id:2, name: 'course2'}    ,
@@ -29,12 +31,17 @@ app.get('/api/courses/:id', (req, res) => {
     }
     res.send(course)
 })
-//create new course with POST
+//create new course with POST ===> use  chrome POSTMAN
 app.post('/api/courses',(req,res)=> {
-const course = {
+//create new object
+    const course = {
     id: courses.length + 1,
-    name : req.body.name
+    name : req.body.name// must use the express.json as a midleware 
 }
+//push it in the courses
+courses.push(course)
+//by principle, show the created object in the body of the reponse to the client
+req.send(course)
 })
 
 /****
