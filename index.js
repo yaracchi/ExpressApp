@@ -3,7 +3,7 @@ const app = express()
 //define route
 //when have http get request to / apply callback fucntion
 app.get('/', (req, res) => {
-        res.send('hello world!!')
+        res.send('hello world!!!!')
 })
 app.get('/api/courses', (req, res) => {
     //get the data from database usually
