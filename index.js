@@ -3,11 +3,12 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+
 const courses = [
     {id:1, name: 'course1'},
-    {id:2, name: 'course2'}    ,
-    {id:3, name: 'course3'}    ,
-    {id:4, name: 'course4'}
+    {id:2, name: 'course2'},
+    {id:3, name: 'course3'},
+    {id:4, name: 'course4'},
 
 ]
 //***********define route
@@ -31,7 +32,7 @@ app.get('/api/courses/:id', (req, res) => {
     }
     res.send(course)
 })
-//create new course with POST ===> use  chrome POSTMAN
+//create new course with POST ===> use  chrome POSTMAN to test the request
 app.post('/api/courses',(req,res)=> {
 //create new object
     const course = {
@@ -41,7 +42,7 @@ app.post('/api/courses',(req,res)=> {
 //push it in the courses
 courses.push(course)
 //by principle, show the created object in the body of the reponse to the client
-req.send(course)
+res.send(course)
 })
 
 /****
