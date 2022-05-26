@@ -4,6 +4,11 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+//morgon loging
+//express session***rare
+
+//node js package: nodefetch***************imp0
+//salesforce api endpoint and how to use them
 
 const courses = [
     {id:1, name: 'course1'},
