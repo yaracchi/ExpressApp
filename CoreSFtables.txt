@@ -1,0 +1,37 @@
+SF Objects are structered as fields(columns) and records(lines)
+
+Core Objects (in debatable order of general importance):
+
+Account
+
+Contact
+
+Opportunity
+
+Case
+
+Lead
+
+Activity (Task/Event)
+
+EmailMessage
+
+Campaign
+
+CampaignMember
+
+Relationships:
+
+1 Account can have zero or many child Contacts, Opportunities, Activities, and Cases
+
+1 Account can itself have zero or many child Accounts or zero or 1 parent Account
+
+1 Case can have zero or many child EmailMessages and child Activities
+
+1 Lead can have zero or many child Activities
+
+1 Lead explodes into 3 separate objects when converted: 1 Account with 1 child contact & 1 child opportunity
+
+1 Campaign can have zero or many child Lead or Contacts joined through a junction object called CampaignMember. This means 1 Lead or Contact can be part of zero or many campaigns and vice-versa (1 Campaign can have 0 or many Leads or Contacts)
+
+There's a lot more to it than that but these are the basics.

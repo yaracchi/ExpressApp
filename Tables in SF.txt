@@ -1,0 +1,4 @@
+connect to my dev account
+go to object maanger
+select an object/table
+check fields

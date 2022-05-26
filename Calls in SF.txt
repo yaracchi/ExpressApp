@@ -1,0 +1,11 @@
+he most important Calls related to Salesforce are given as follows:
+
+*Log in to the Login Server (login()) and obtain authentication info to be used for successive calls.
+*Request the enterprise’s data (query(), queryAll(), queryMore(), and retrieve() calls).
+*Execute text searches across the enterprise’s database (search() call).
+*Create, Update, and Delete data (create(), merge(), update(), upsert(), delete(), and undelete() calls).
+*Accomplish secretarial tasks, such as extracting user information (getUserInfo() call), modifying passwords (setPassword() and resetPassword() calls), and displaying the server time (getServerTimestamp() call).
+*Reproduce data locally (getDeleted() and getUpdated() calls).
+*Attain and circumnavigate metadata about the enterprise’s data (describeGlobal(), describeSObject(), describeSObjects(), describeLayout(), and describeTabs() calls).
+*Work with approval processes (process()).
+*Return category groups and categories from the enterprise (describeDataCategoryGroups() and describeDataCategoryGroupStructures()).
