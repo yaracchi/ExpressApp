@@ -1,4 +1,5 @@
 //https://www.youtube.com/watch?v=pKd0Rpw7O48
+//http://expressjs.com/en/4x/api.html#req
 const express = require('express')
 const app = express()
 
@@ -34,10 +35,15 @@ app.get('/api/courses/:id', (req, res) => {
 })
 //create new course with POST ===> use  chrome POSTMAN to test the request
 app.post('/api/courses',(req,res)=> {
-//create new object
+    // input validation 
+    if(req.body.name || req.body.length < 3){
+        res.status(400).send('the name is required and must be minimum 4 characters')
+        return;
+    }
+    //create new object
     const course = {
     id: courses.length + 1,
-    name : req.body.name// must use the express.json as a midleware 
+    name : req.body.name // must use the express.json as a midleware 
 }
 //push it in the courses
 courses.push(course)
