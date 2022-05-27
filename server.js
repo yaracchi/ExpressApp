@@ -164,19 +164,17 @@ app.get('/myapi/contacts', (req, res) => {
 //###################################### SOQL:  POST/add records.################################
 //*******************************Add Single record update
 
-//************************WORKS and USED
+//************************Create a new element
 app.post('/myapi/account',(req,res)=>{
     /*************in post body
      * 	{         "Id" : "0017000000hOMChAAO",
-        "Name" : "Updated Account #1"    }
+        "Name" : "created Account #1"    }
      */
    const p = req.body
-    //parse request body to create record object for SF
        const record = {
             Id: p.Id,
             Name: p.Name         
        }
-       //must conn.login cuz no session opened**********************
        conn.login(creds.username, creds.password, function(err, userInfo) {
         if (err) { return console.error(err); }
             console.log(record)
@@ -185,10 +183,7 @@ app.post('/myapi/account',(req,res)=>{
                 if (err || !ret.success) { return console.error(err, ret); }
                 console.log("Created record id : " + ret.id);
                 })
-    // ...
 });
- 
-    //record.push('account')
     res.send(record)
   })
   
