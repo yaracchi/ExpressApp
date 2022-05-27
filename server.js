@@ -12,14 +12,10 @@ let creds = JSON.parse(fs.readFileSync(path.resolve(__dirname, './SF_creds.json'
 //######################################################### User authentification.################################
 //###########################################Methode 1 : Users identification once and then initiate connection when http request
 
-//jsForce connection
 const authObject = new jsforce.OAuth2({
-    // you can change loginUrl to connect to sandbox or prerelease env.
-    //loginUrl : 'https://anrpc.my.salesforce.com/'
     loginUrl: creds.instanceURL+'.my.salesforce.com/',//*get from login page */
     ClientId : creds.clientID,
     clientSecret : creds.clientSecret,
-    //redirectUri : 'http://localhost:' + port +'/token'
     redirectUri : 'http://localhost:1000/myapi/token' 
 });
 
@@ -31,17 +27,13 @@ app.get("/myapi/auth/login", function(req, res) {
   });
 //i can access the redirecting url but...
 //***************This error is in the auth callback: invalid_client_id: client identifier invalid */
-//*****ERROR error=invalid_client_id&error_description=client%20identifier%20invalid */
 app.get('/myapi/token', (req, res) => {
     console.log("inside /token")
     const connect = new jsforce.Connection({oauth2: authObject});
     
     connect.login(creds.username, creds.password, function(err, userInfo) {
     if (err) { return console.error(err); }
-    //we parse out the code that Salesforce sent back to the /token url when it returned us from the login
     const code = req.query.code;
-    // once you’ve logged in and been redirected to the token route, you should see something
-    // like ‘http://localhost:3030/token?query=longhashedoutstringxyz’.
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error("This error is in the auth callback: " + err); }//******* */
         // Now you can get the access token and instance URL information.
@@ -60,18 +52,15 @@ app.get('/myapi/token', (req, res) => {
     //redirect to the login page of SF
 
     res.send("authentification succeded");
-    //res.send(userInfo); //inside login
   });
 })
 })
 //########################################### Methode 2 : Users identification for each request
 var conn = new jsforce.Connection({
-    // you can change loginUrl to connect to sandbox or prerelease env.
     //loginUrl : 'https://anrpc.my.salesforce.com/'
     loginUrl: creds.instanceURL+'.my.salesforce.com/',
     ClientId : creds.clientID,
     clientSecret : creds.clientSecret,
-    //redirectUri : 'http://localhost:' + port +'/token'
     redirectUri : 'http://localhost:1000/myapi/token'
   });
 
