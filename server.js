@@ -72,10 +72,10 @@ var conn = new jsforce.Connection({
     ClientId : creds.clientID,
     clientSecret : creds.clientSecret,
     //redirectUri : 'http://localhost:' + port +'/token'
-    redirectUri : 'http://localhost:1000/myapi/token'//******BE WARRY OF, check if same as in app SF connected */
+    redirectUri : 'http://localhost:1000/myapi/token'
   });
 
-//****************************GET ALL ACCOUNTs Request
+//**************************** task 4 GET ALL ACCOUNTs Request
 //SIMPLE QUERY
 app.get('/myapi/accounts', (req, res) => {
 conn.login(creds.username, creds.password, function(err, userInfo) {
@@ -88,7 +88,7 @@ conn.login(creds.username, creds.password, function(err, userInfo) {
   });
   
 }); })
-//**************************************************GET an account using the ID
+//************************************task 1 GET an account using the ID
 app.get('/myapi/account/:accountID', (req, res) => {
     conn.login(creds.username, creds.password, function(err, userInfo) {
         if (err) { return console.error(err); }
@@ -96,7 +96,6 @@ app.get('/myapi/account/:accountID', (req, res) => {
         conn.sobject("Account").retrieve(req.params.accountID, function(err, account) {
         if (err) { return console.error(err); }
         console.log("Name : " + account.Name);
-        // ...
   })
 })
 res.send(req.params)
@@ -121,7 +120,7 @@ app.get('/myapi/contact/BeforeYestrday', (req,res) => {
   })
 })
 
-//########################### Edit request of an account
+//########################### task 3 update new element request 
 app.put('/myapi/accounts/:accountID',(req,res)=>{
      
      //in postman
@@ -144,27 +143,7 @@ app.put('/myapi/accounts/:accountID',(req,res)=>{
     })
 })
 
-//********************************TESTED
- //CONDITIONAL QUERY
-app.get('/myapi/contacts', (req, res) => {
-     //i am logging eachtime manually and not using the authentif session info   
-
-  conn.login(creds.username, creds.password, function(err, userInfo) {
-    if (err) { return console.error(err); }
-    console.log("SOQL FITCH RESULT")
-    let  q = "SELECT Id, Name, CreatedDate FROM Contact WHERE CreatedDate >= YESTERDAY ORDER BY CreatedDate DESC, Name ASC LIMIT 5 OFFSET 10"
-    conn.query(q, function(err, result2) {
-      if (err) { return console.error(err); }
-      //console.log(result2);
-      res.send(result2)
-    });
-    
-  }); })
-
-//###################################### SOQL:  POST/add records.################################
-//*******************************Add Single record update
-
-//************************Create a new element
+//************************task 2 : Create a new element
 app.post('/myapi/account',(req,res)=>{
     /*************in post body
      * 	{         "Id" : "0017000000hOMChAAO",
@@ -203,7 +182,24 @@ app.post('/myapi/account',(req,res)=>{
     }
   });*/
 
-// ******************************************UPDATE Opportunity with parameters
+//********************************TESTED
+ //CONDITIONAL QUERY
+ app.get('/myapi/contacts', (req, res) => {
+    //i am logging eachtime manually and not using the authentif session info   
+
+ conn.login(creds.username, creds.password, function(err, userInfo) {
+   if (err) { return console.error(err); }
+   console.log("SOQL FITCH RESULT")
+   let  q = "SELECT Id, Name, CreatedDate FROM Contact WHERE CreatedDate >= YESTERDAY ORDER BY CreatedDate DESC, Name ASC LIMIT 5 OFFSET 10"
+   conn.query(q, function(err, result2) {
+     if (err) { return console.error(err); }
+     //console.log(result2);
+     res.send(result2)
+   });
+   
+ }); })
+
+// ******************************************task 3 UPDATE Opportunity with parameters
 // SET CloseDate = '2013-08-31'
 // WHERE Account.Name = 'Salesforce.com'
 app.get("myapi/candidate/search/:name", (req,res) => {
@@ -221,12 +217,42 @@ app.get("myapi/candidate/search/:name", (req,res) => {
 })
 })
 
+//****************************Extra task log in */
+app.get('/myapi/',(req,res) =>{
+    conn.login(creds.username, creds.password, function(err, userInfo) {
+        if (err) { return console.error(err); }
+        console.log("User ID: " + userInfo.id); 
+        console.log("Org ID: " + userInfo.organizationId); 
+        console.log("Access token: " + conn.accessToken); 
+        console.log("Instance URL: " + conn.instanceUrl);
+        res.send(userInfo)
+    })
+    
+})
 
-//###################################### SOQL:  Delete records.################################
+// ***************************************Extra task to delete an element
+//"00001009"
+app.delete('/myapi/cases/:caseID', (req,res) => {
+    conn.login(creds.username, creds.password, function(err, userInfo) {
+        if (err) { return console.error(err); }
+           console.log(" inside delete sobject")
+   
+           conn.sobject('Case')
+       .find({ CaseNumber : req.params.caseID })
+       .destroy(function(err, rets) {
+         if (err) { return console.error(err); }
+         console.log(rets);
+         // ...
+         res.send(rets)
+       });
+       })
+}) 
+    
 
 //**************************************Single record deletion
 //must delete case with number and opportunity with names
 // ***************************************TESTED
+/*
 app.delete('/myapi/accounts/:accountID', (req,res) => {
      //i am logging eachtime manually and not using the authentif session info   
 
@@ -241,7 +267,7 @@ conn.login(creds.username, creds.password, function(err, userInfo) {
    })
 })
 
-
+*/
 //**************************************Multiple record deletion
 /*app.delete('/myapi/accounts', (req,res) => {
     conn.login(creds.username, creds.password, function(err, userInfo) {
@@ -263,24 +289,6 @@ conn.login(creds.username, creds.password, function(err, userInfo) {
     })
 })*/
 
-// ***************************************Extra task to delete an element
-//"00001009"
-app.delete('/myapi/cases/:caseID', (req,res) => {
-    conn.login(creds.username, creds.password, function(err, userInfo) {
-        if (err) { return console.error(err); }
-           console.log(" inside delete sobject")
-   
-           conn.sobject('Case')
-       .find({ CaseNumber : req.params.caseID })
-       .destroy(function(err, rets) {
-         if (err) { return console.error(err); }
-         console.log(rets);
-         // ...
-         res.send(rets)
-       });
-       })
-}) 
-    
  // ***************************************TESTED
 /*
     conn.login(creds.username, creds.password, function(err, userInfo) {
@@ -336,17 +344,6 @@ conn.query("SELECT Id, Name FROM Account", function(err, result) {
     handleResult(res);
   });*/
 
-  app.get('/myapi/',(req,res) =>{
-    conn.login(creds.username, creds.password, function(err, userInfo) {
-        if (err) { return console.error(err); }
-        console.log("User ID: " + userInfo.id); 
-        console.log("Org ID: " + userInfo.organizationId); 
-        console.log("Access token: " + conn.accessToken); 
-        console.log("Instance URL: " + conn.instanceUrl);
-        res.send(userInfo)
-    })
-    
-})
   const port = process.env.PORT || 1000
 app.listen(port, ()=>{
     console.log(`im listening on port ${port}`)
